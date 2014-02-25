@@ -4,7 +4,7 @@
  * @license MIT
  */
 angular.module('ui.router.stateHelper', ['ui.router'])
-    .provider('stateHelper', function($stateProvider){
+    .provider('stateHelper', ["$stateProvider", function ($stateProvider) {
         var self = this;
 
         /**
@@ -18,12 +18,12 @@ angular.module('ui.router.stateHelper', ['ui.router'])
          * @param {Object} state - A regular ui.router state object.
          * @param {Array} [state.children] - An optional array of child states.
          */
-        this.setNestedState = function(state){
+        this.setNestedState = function (state) {
             fixStateName(state);
             $stateProvider.state(state);
 
-            if(state.children && state.children.length){
-                state.children.forEach(function(childState){
+            if (state.children && state.children.length) {
+                state.children.forEach(function (childState) {
                     childState.parent = state;
                     self.setNestedState(childState);
                 });
@@ -36,10 +36,9 @@ angular.module('ui.router.stateHelper', ['ui.router'])
          * Converts the name of a state to dot notation, of the form `grandfather.father.state`.
          * @param state
          */
-        function fixStateName(state){
-            if(state.parent){
+        function fixStateName(state) {
+            if (state.parent) {
                 state.name = state.parent.name + '.' + state.name;
             }
         }
-    })
-;
+    }]);
